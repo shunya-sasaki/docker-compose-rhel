@@ -1,0 +1,25 @@
+services:
+  rhel:
+    image: redhat/ubi9
+    container_name: ${CONTAINER_NAME:-rhel}
+    hostname: {HOSTNAME:-rhel}
+    tty: true
+    networks:
+      - mynet
+    ports:
+      - "${SSH_PORT:-22}:22"
+    volumes:
+      - ./rhel/init/entrypoint.sh:/entrypoint.sh:ro
+      - ./rhel/tmp:/tmp:rw
+    entrypoint: bash entrypoint.sh
+    secrets:
+      - my_secrets
+      - authorized_keys
+networks:
+  mynet:
+    driver: bridge
+secrets:
+  my_secrets:
+    file: secrets.txt
+  authorized_keys:
+    file: ${SSH_PUBLIC_KEY:-~/.ssh/id_rsa.pub}
