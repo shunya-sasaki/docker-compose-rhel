@@ -1,7 +1,16 @@
 #!/bin/bash
 dnf install -y sudo openssh-server
-mkdir /var/run/sshd
+
+# Create the /var/run/sshd directory
+if [ ! -d /var/run/sshd ]; then
+    mkdir /var/run/sshd
+fi
+
 ssh-keygen -A
+
+# Change the sudoers file to allow passwordless sudo
+sed -i "s/^%wheel\s*ALL=(ALL)\s*ALL$/#&/" /etc/sudoers
+sed -i "s/^#\s*%wheel\s*ALL=(ALL)\s*NOPASSWD:\s*ALL$/%wheel  ALL=(ALL)    NOPASSWD: ALL/" /etc/sudoers
 
 # Read the user name and password from secret
 {
