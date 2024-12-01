@@ -2,7 +2,7 @@ services:
   rhel:
     image: redhat/ubi9
     container_name: ${CONTAINER_NAME:-rhel}
-    hostname: {HOSTNAME:-rhel}
+    hostname: ${HOSTNAME:-rhel}
     tty: true
     networks:
       - mynet
